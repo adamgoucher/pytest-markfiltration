@@ -1,10 +1,11 @@
+import copy
 import pytest, py
 from _pytest.mark import MarkInfo
 
 def pytest_addoption(parser):
     group = parser.getgroup("general")
     group._addoption('-f',
-        action="store", dest="filter", default='', metavar="FILTEREXPR",
+        action="append", dest="filter", default=[], metavar="FILTEREXPR",
         help="only run tests which have marks that match given"
              "keyword expression.  "
              "An expression consists of space-separated terms. "
@@ -12,17 +13,20 @@ def pytest_addoption(parser):
 
 # blatantly lifted from _pytest.mark.py
 def pytest_collection_modifyitems(items, config):
-    filterexpr = config.option.filter
-    if not filterexpr:
+    filterlist = config.option.filter
+    if not filterlist:
         return
 
     remaining = []
     deselected = []
-    for colitem in items:
-        if filterexpr and skipbykeyword(colitem, filterexpr):
-            deselected.append(colitem)
-        else:
-            remaining.append(colitem)
+    for filtr in filterlist:
+        dirty_items = copy.copy(items)
+        
+        for item in dirty_items:
+            if filtr and skipbykeyword(item, filtr):
+                deselected.append(item)
+            else:
+                remaining.append(item)  
                 
     if deselected:
         config.hook.pytest_deselected(items=deselected)
