@@ -23,11 +23,20 @@ def pytest_collection_modifyitems(items, config):
         dirty_items = copy.copy(items)
         
         for item in dirty_items:
-            if filtr and skipbykeyword(item, filtr):
+            if filtr[:1] != '-' and skipbykeyword(item, filtr):
+                # skip
                 deselected.append(item)
+            elif filtr[:1] == '-' and skipbykeyword(item, filtr):
+                # remove
+                deselected.append(item)
+                if item in remaining:
+                    del remaining[remaining.index(item)]
             else:
-                remaining.append(item)  
-                
+                # keep
+                remaining.append(item)
+
+    deselected = [i for i in set(deselected)]
+    remaining = [i for i in set(remaining)]
     if deselected:
         config.hook.pytest_deselected(items=deselected)
         items[:] = remaining

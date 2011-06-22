@@ -19,6 +19,22 @@ And to disclude one
 
 py.test -f -hippo
 
+Just like with -k you can do an 'and' collection as well with
+
+py.test -f "hippo rhino"
+
+or
+
+py.test -f "hippo -rhino"
+
+But the built-in -k does not let you do an 'or' collection. -f does allow for it though through multiple instances of he flag
+
+py.test -f hippo -f rhino
+
+and perhaps a silly example of
+
+py.test -f hippo -f -rhino
+
 To install, either
 * pip install pytest-markfiltration
 * python setup.py install
