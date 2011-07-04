@@ -76,3 +76,6 @@ def matchonekeyword(key, itemkeywords):
         else:
             return False
     return True
+    
+class MarkFiltration(object):
+    pass
