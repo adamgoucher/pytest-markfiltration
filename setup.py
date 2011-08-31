@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name="pytest-markfiltration",
     packages = ["markfiltration"],
-    version = "0.4",
+    version = "0.5",
     author = "adam goucher",
     author_email = "adam@element34.ca",
     install_requires = ['pytest>2.0.2'],

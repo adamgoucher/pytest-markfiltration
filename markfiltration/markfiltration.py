@@ -71,7 +71,7 @@ def getkeywords(node):
 def matchonekeyword(key, itemkeywords):
     for elem in key.split("."):
         for kw in itemkeywords:
-            if elem in kw:
+            if elem == kw:
                 break
         else:
             return False

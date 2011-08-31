@@ -140,3 +140,20 @@ class Test_collection:
         passed, skipped, failed = reprec.listoutcomes()
         assert len(passed) == 1
         assert passed[0].nodeid.split('::')[1] == 'test_bar'
+
+    def test_check_collect_video_but_not_videosearch(self, testdir):
+        p = testdir.makepyfile("""
+            import pytest
+
+            @pytest.mark.video
+            def test_foo():
+                pass
+
+            @pytest.mark.videosearch
+            def test_bar():
+                pass
+        """)
+        reprec = testdir.inline_run("-s", '-f', "video", p)
+        passed, skipped, failed = reprec.listoutcomes()
+        assert len(passed) == 1
+        assert passed[0].nodeid.split('::')[1] == 'test_foo'
