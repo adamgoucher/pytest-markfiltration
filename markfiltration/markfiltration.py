@@ -13,6 +13,12 @@ def pytest_addoption(parser):
 
 # blatantly lifted from _pytest.mark.py
 def pytest_collection_modifyitems(items, config):
+    # the terminal reporter is looking for config.option.keyword specifically
+    if len(config.option.filter) == 1:
+        config.option.keyword = config.option.filter[0].strip()
+    else:
+        config.option.keyword = ", ".join([i.strip() for i in config.option.filter])
+    
     filterlist = config.option.filter
     if not filterlist:
         return
@@ -38,7 +44,8 @@ def pytest_collection_modifyitems(items, config):
     deselected = [i for i in set(deselected)]
     remaining = [i for i in set(remaining)]
     if deselected:
-        config.hook.pytest_deselected(items=deselected)
+        print(deselected)
+        config.hook.pytest_deselected(items = deselected)
         items[:] = remaining
 
 # blatantly lifted from _pytest.mark.py
