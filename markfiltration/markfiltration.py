@@ -44,7 +44,6 @@ def pytest_collection_modifyitems(items, config):
     deselected = [i for i in set(deselected)]
     remaining = [i for i in set(remaining)]
     if deselected:
-        print(deselected)
         config.hook.pytest_deselected(items = deselected)
         items[:] = remaining
 
