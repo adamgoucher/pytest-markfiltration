@@ -90,7 +90,7 @@ class Test_collection:
             def test_baz():
                 pass
         """)
-        reprec = testdir.inline_run("-s", '-f', "foo", "-f", "bar", p)
+        reprec = testdir.inline_run("-s", '-f', "foo", "-f", "bar", "-p", "no:mark", p)
         passed, skipped, failed = reprec.listoutcomes()
         assert len(passed) == 3
         acceptable = ['test_baz', 'test_foo', 'test_bar']
@@ -114,7 +114,7 @@ class Test_collection:
             def test_baz():
                 pass
         """)
-        reprec = testdir.inline_run("-s", '-f', "foo -bar", p)
+        reprec = testdir.inline_run("-s", '-f', "foo -bar", "-p", "no:mark", p)
         passed, skipped, failed = reprec.listoutcomes()
         assert len(passed) == 1
         assert passed[0].nodeid.split('::')[1] == 'test_bar'
@@ -136,7 +136,7 @@ class Test_collection:
             def test_baz():
                 pass
         """)
-        reprec = testdir.inline_run("-s", '-f', "foo", "-f", "-bar", p)
+        reprec = testdir.inline_run("-s", '-f', "foo", "-f", "-bar", "-p", "no:mark", p)
         passed, skipped, failed = reprec.listoutcomes()
         assert len(passed) == 1
         assert passed[0].nodeid.split('::')[1] == 'test_bar'
